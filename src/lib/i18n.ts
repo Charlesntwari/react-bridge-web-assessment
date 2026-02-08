@@ -52,6 +52,14 @@ const resources = {
       medium: 'Medium',
       low: 'Low',
       
+      // Pages
+      designSystem: 'Design System',
+      marketingCampaign: 'Marketing Campaign',
+      productRoadmap: 'Product Roadmap',
+      personalNotes: 'Personal Notes',
+      learningGoals: 'Learning Goals',
+      addPage: 'Add page',
+      
       // Misc
       upgrade: 'Upgrade',
       upgradeMessage: 'Get access to all features',
@@ -141,6 +149,14 @@ const resources = {
       high: 'Haute',
       medium: 'Moyenne',
       low: 'Basse',
+      
+      // Pages
+      designSystem: 'Système de Conception',
+      marketingCampaign: 'Campagne Marketing',
+      productRoadmap: 'Feuille de Route Produit',
+      personalNotes: 'Notes Personnelles',
+      learningGoals: 'Objectifs d\'Apprentissage',
+      addPage: 'Ajouter une page',
       
       // Misc
       upgrade: 'Mettre à niveau',

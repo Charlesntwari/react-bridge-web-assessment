@@ -39,14 +39,14 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   ];
 
   const sharedPages = [
-    { name: 'Design System', color: 'bg-pink-500' },
-    { name: 'Marketing Campaign', color: 'bg-blue-500' },
-    { name: 'Product Roadmap', color: 'bg-green-500' },
+    { key: 'designSystem', color: 'bg-pink-500' },
+    { key: 'marketingCampaign', color: 'bg-blue-500' },
+    { key: 'productRoadmap', color: 'bg-green-500' },
   ];
 
   const privatePages = [
-    { name: 'Personal Notes', color: 'bg-purple-500' },
-    { name: 'Learning Goals', color: 'bg-orange-500' },
+    { key: 'personalNotes', color: 'bg-purple-500' },
+    { key: 'learningGoals', color: 'bg-orange-500' },
   ];
 
   return (
@@ -136,12 +136,12 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             <CollapsibleContent className="space-y-1">
               {sharedPages.map((page) => (
                 <Button
-                  key={page.name}
+                  key={page.key}
                   variant="ghost"
                   className="w-full justify-start gap-2 text-sidebar-foreground hover:bg-sidebar-accent"
                 >
                   <div className={cn('h-2 w-2 rounded-sm', page.color)} />
-                  <span className="text-sm">{page.name}</span>
+                  <span className="text-sm">{t(page.key)}</span>
                 </Button>
               ))}
               <Button
@@ -149,7 +149,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 className="w-full justify-start gap-2 text-muted-foreground hover:bg-sidebar-accent hover:text-foreground"
               >
                 <Plus className="h-4 w-4" />
-                <span className="text-sm">Add page</span>
+                <span className="text-sm">{t('addPage')}</span>
               </Button>
             </CollapsibleContent>
           </Collapsible>
@@ -167,12 +167,12 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             <CollapsibleContent className="space-y-1">
               {privatePages.map((page) => (
                 <Button
-                  key={page.name}
+                  key={page.key}
                   variant="ghost"
                   className="w-full justify-start gap-2 text-sidebar-foreground hover:bg-sidebar-accent"
                 >
                   <Hash className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">{page.name}</span>
+                  <span className="text-sm">{t(page.key)}</span>
                 </Button>
               ))}
             </CollapsibleContent>
