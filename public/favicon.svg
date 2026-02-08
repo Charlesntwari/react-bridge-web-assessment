@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <style>
+      @media (prefers-color-scheme: dark) {
+        :root { --bg: #0f172a; --fg: #e2e8f0; }
+      }
+      @media (prefers-color-scheme: light) {
+        :root { --bg: #ffffff; --fg: #1e293b; }
+      }
+    </style>
+  </defs>
+  <!-- Background -->
+  <rect width="32" height="32" fill="var(--bg, #ffffff)" rx="4"/>
+  <!-- Checklist icon -->
+  <g fill="none" stroke="var(--fg, #1e293b)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- First checkbox (checked) -->
+    <rect x="5" y="6" width="4" height="4" rx="0.5"/>
+    <path d="M6.5 7.5L7.5 8.5L9 7"/>
+    <!-- Checkbox line 1 -->
+    <line x1="10" y1="8" x2="26" y2="8"/>
+    
+    <!-- Second checkbox (checked) -->
+    <rect x="5" y="14" width="4" height="4" rx="0.5"/>
+    <path d="M6.5 15.5L7.5 16.5L9 15"/>
+    <!-- Checkbox line 2 -->
+    <line x1="10" y1="16" x2="26" y2="16"/>
+    
+    <!-- Third checkbox (unchecked) -->
+    <rect x="5" y="22" width="4" height="4" rx="0.5"/>
+    <!-- Checkbox line 3 -->
+    <line x1="10" y1="24" x2="26" y2="24"/>
+  </g>
+</svg>
