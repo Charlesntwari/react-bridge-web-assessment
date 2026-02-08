@@ -1,5 +1,7 @@
 # Task Management App
 
+[![Vercel](https://img.shields.io/vercel/deploy-status/Charlesntwari/react-bridge-web-assessment?style=flat-square)](https://vercel.com/Charlesntwari/react-bridge-web-assessment)
+
 A comprehensive task management application built with React, TypeScript, and modern web technologies. Features multiple views including Kanban board, list view, and timeline, with full CRUD functionality, dark mode support, and internationalization.
 
 ## Features
@@ -282,6 +284,44 @@ See `.github/workflows/` for full configurations.
 7. Open a Pull Request
 
 ## License
+
+## Custom domain & DNS
+
+To add a custom domain (example: `example.com`) to your Vercel deployment:
+
+1. In the Vercel dashboard, open your Project → Settings → Domains → "Add"
+2. Enter your domain (e.g. `example.com`) and follow the verification steps
+
+DNS configuration (choose one depending on whether you're using the root domain or a subdomain):
+
+- Root domain (example.com): add an A record pointing to Vercel's IPs and/or an ALIAS/ANAME depending on your DNS provider. Vercel advises using the provided A records in the dashboard.
+- Subdomain (www.example.com): add a CNAME record pointing to `cname.vercel-dns.com.`
+
+Example (common providers):
+
+- Cloudflare / DNS provider (subdomain):
+  - `Type: CNAME`
+  - `Name: www` (or your subdomain)
+  - `Value: cname.vercel-dns.com`
+
+- Root domain (if provider supports ANAME/ALIAS):
+  - `Type: ALIAS` or `ANAME`
+  - `Name: @`
+  - `Value: cname.vercel-dns.com`
+
+After adding the DNS records, wait for propagation and click "Verify" in Vercel. Vercel will automatically provision SSL when verification succeeds.
+
+Optional (CLI): to add and verify domain via the Vercel CLI:
+
+```bash
+vercel domains add example.com
+vercel domains inspect example.com
+```
+
+Notes:
+
+- DNS propagation can take up to 24 hours, but typically completes within minutes to a few hours.
+- If you use Cloudflare or a proxying CDN, ensure DNS records are in "DNS only" (orange-cloud off) mode during verification.
 
 MIT License - see LICENSE file for details
 
