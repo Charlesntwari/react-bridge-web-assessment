@@ -1,6 +1,6 @@
 # Task Management App
 
-[![Vercel](https://img.shields.io/vercel/deploy-status/Charlesntwari/react-bridge-web-assessment?style=flat-square)](https://vercel.com/Charlesntwari/react-bridge-web-assessment)
+**🚀 [Live Demo](https://react-bridge-web-assessment.vercel.app)**
 
 A comprehensive task management application built with React, TypeScript, and modern web technologies. Features multiple views including Kanban board, list view, and timeline, with full CRUD functionality, dark mode support, and internationalization.
 
@@ -58,7 +58,7 @@ npm install --legacy-peer-deps
 npm run dev
 ```
 
-4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+4. Open [http://localhost:8080](http://localhost:8080) in your browser.
 
 ## Available Scripts
 
@@ -132,69 +132,6 @@ npm run e2e
 6. **View Switching** - Navigate between Kanban Board, List, and Timeline views
 
 Each test validates API calls, UI updates, and state management.
-
-## Deployment
-
-### Vercel (Recommended)
-
-1. **Push code to GitHub**
-
-```bash
-git push origin main
-```
-
-2. **Deploy to Vercel**
-   - Visit [vercel.com](https://vercel.com)
-   - Click "New Project"
-   - Import your GitHub repository
-   - Vercel auto-detects Vite settings from `vercel.json`
-   - Click "Deploy"
-
-3. **Enable Automatic Deployments**
-   - Every push to `main` triggers automatic build and deployment
-   - Real-time preview URLs for pull requests
-
-4. **Monitor Deployments**
-   - View logs and deployment status on Vercel dashboard
-   - Automatic rollback on build failures
-
-**Alternative - Using Vercel CLI:**
-
-```bash
-npm install -g vercel
-vercel
-```
-
-### Netlify
-
-1. **Push code to GitHub**
-
-```bash
-git push origin main
-```
-
-2. **Connect to Netlify**
-   - Visit [netlify.com](https://netlify.com)
-   - Click "New site from Git"
-   - Select your GitHub repository
-   - Build command: `npm run build`
-   - Publish directory: `dist`
-   - Click "Deploy"
-
-3. **Add Environment Variables** (if needed)
-   - Go to "Site settings" → "Build & deploy" → "Environment"
-   - Redeploy to apply changes
-
-### Pre-Deployment Checks
-
-Before deploying, ensure:
-
-```bash
-npm run test        # All tests pass
-npm run build       # Build succeeds
-npm run lint        # No linting errors
-npm run e2e         # E2E tests pass (optional)
-```
 
 ## Project Structure
 
@@ -272,59 +209,3 @@ GitHub Actions automatically run on every push and PR:
 - **build.yml** - Verifies the production build succeeds
 
 See `.github/workflows/` for full configurations.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/my-feature`
-3. Make your changes
-4. Test: `npm run test && npm run lint && npm run build`
-5. Commit: `git commit -m "Add my feature"`
-6. Push: `git push origin feature/my-feature`
-7. Open a Pull Request
-
-## License
-
-## Custom domain & DNS
-
-To add a custom domain (example: `example.com`) to your Vercel deployment:
-
-1. In the Vercel dashboard, open your Project → Settings → Domains → "Add"
-2. Enter your domain (e.g. `example.com`) and follow the verification steps
-
-DNS configuration (choose one depending on whether you're using the root domain or a subdomain):
-
-- Root domain (example.com): add an A record pointing to Vercel's IPs and/or an ALIAS/ANAME depending on your DNS provider. Vercel advises using the provided A records in the dashboard.
-- Subdomain (www.example.com): add a CNAME record pointing to `cname.vercel-dns.com.`
-
-Example (common providers):
-
-- Cloudflare / DNS provider (subdomain):
-  - `Type: CNAME`
-  - `Name: www` (or your subdomain)
-  - `Value: cname.vercel-dns.com`
-
-- Root domain (if provider supports ANAME/ALIAS):
-  - `Type: ALIAS` or `ANAME`
-  - `Name: @`
-  - `Value: cname.vercel-dns.com`
-
-After adding the DNS records, wait for propagation and click "Verify" in Vercel. Vercel will automatically provision SSL when verification succeeds.
-
-Optional (CLI): to add and verify domain via the Vercel CLI:
-
-```bash
-vercel domains add example.com
-vercel domains inspect example.com
-```
-
-Notes:
-
-- DNS propagation can take up to 24 hours, but typically completes within minutes to a few hours.
-- If you use Cloudflare or a proxying CDN, ensure DNS records are in "DNS only" (orange-cloud off) mode during verification.
-
-MIT License - see LICENSE file for details
-
-## Author
-
-Created as a comprehensive React technical assessment.
