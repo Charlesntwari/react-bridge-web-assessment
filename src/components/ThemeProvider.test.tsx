@@ -101,7 +101,7 @@ describe('ThemeProvider', () => {
 
   it('should handle system theme preference', () => {
     // Mock system preference to dark
-    const matchMediaMock = (query: string) => ({
+    const matchMediaMock = (query: string): MediaQueryList => ({
       matches: query === '(prefers-color-scheme: dark)',
       media: query,
       onchange: null,
@@ -110,9 +110,9 @@ describe('ThemeProvider', () => {
       addEventListener: () => {},
       removeEventListener: () => {},
       dispatchEvent: () => false,
-    });
+    } as MediaQueryList);
 
-    window.matchMedia = matchMediaMock as any;
+    window.matchMedia = matchMediaMock as typeof window.matchMedia;
 
     render(
       <ThemeProvider defaultTheme="system">

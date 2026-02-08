@@ -5,8 +5,13 @@ import { useTasks, useCreateTask, useUpdateTask, useDeleteTask, useTasksByStatus
 import { Task } from '@/types/task';
 import { ReactNode } from 'react';
 
+interface MockResponse {
+  ok: boolean;
+  json: () => Promise<unknown>;
+}
+
 // Mock fetch
-global.fetch = vi.fn();
+global.fetch = vi.fn() as ReturnType<typeof vi.fn<[], Promise<MockResponse>>>
 
 const mockTasks: Task[] = [
   {
@@ -64,7 +69,7 @@ describe('useTasks', () => {
   });
 
   it('should fetch tasks successfully', async () => {
-    (global.fetch as any).mockResolvedValueOnce({
+    (global.fetch as ReturnType<typeof vi.fn<[], Promise<MockResponse>>>).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ todos: mockTasks }),
     });
@@ -85,7 +90,7 @@ describe('useTasks', () => {
   });
 
   it('should handle fetch error', async () => {
-    (global.fetch as any).mockResolvedValueOnce({
+    (global.fetch as ReturnType<typeof vi.fn<[], Promise<MockResponse>>>).mockResolvedValueOnce({
       ok: false,
       json: async () => ({}),
     });
@@ -112,7 +117,7 @@ describe('useCreateTask', () => {
       status: 'todo',
     };
 
-    (global.fetch as any).mockResolvedValueOnce({
+    (global.fetch as ReturnType<typeof vi.fn<[], Promise<MockResponse>>>).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ id: 3, ...newTask }),
     });
