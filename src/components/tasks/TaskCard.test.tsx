@@ -22,8 +22,8 @@ const mockTask: Task = {
   dueDate: '2026-02-15',
   startDate: '2026-02-01',
   checklist: [
-    { id: 1, text: 'Subtask 1', completed: true },
-    { id: 2, text: 'Subtask 2', completed: false },
+    { id: '1', text: 'Subtask 1', completed: true },
+    { id: '2', text: 'Subtask 2', completed: false },
   ],
   commentsCount: 3,
   attachmentsCount: 2,
