@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { format } from 'date-fns';
 import {
@@ -74,7 +74,7 @@ export function TaskDialog({ open, onClose, task, onSave, onDelete }: TaskDialog
   };
 
   // Reset form when task changes
-  useState(() => {
+  useEffect(() => {
     if (task) {
       setTitle(task.title);
       setDescription(task.description || '');
@@ -82,7 +82,7 @@ export function TaskDialog({ open, onClose, task, onSave, onDelete }: TaskDialog
       setStatus(task.status);
       setDueDate(task.dueDate ? format(new Date(task.dueDate), 'yyyy-MM-dd') : '');
     }
-  });
+  }, [task]);
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>

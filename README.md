@@ -1,6 +1,6 @@
 # Task Management App
 
-**🚀 [Live Demo](https://react-bridge-web-assessment.vercel.app)**
+**[To Do Application Live Demo](https://react-bridge-web-assessment.vercel.app)**
 
 A comprehensive task management application built with React, TypeScript, and modern web technologies. Features multiple views including Kanban board, list view, and timeline, with full CRUD functionality, dark mode support, and internationalization.
 
