@@ -2,7 +2,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "nodeVersion": "18.x",
   "env": {
     "NPM_FLAGS": "--legacy-peer-deps"
   }
