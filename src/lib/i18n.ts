@@ -75,6 +75,7 @@ const resources = {
 
       // Filters
       filter: "Filter",
+      clearFilters: "Clear filters",
       sort: "Sort",
       sortBy: "Sort by",
       all: "All",
@@ -173,6 +174,7 @@ const resources = {
 
       // Filters
       filter: "Filtrer",
+      clearFilters: "Effacer les filtres",
       sort: "Trier",
       sortBy: "Trier par",
       all: "Tout",

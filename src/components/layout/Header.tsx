@@ -7,9 +7,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuCheckboxItem,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
 } from '@/components/ui/dropdown-menu';
 import { useTheme } from '@/components/ThemeProvider';
-import { LayoutGrid, List, Calendar, Plus, Moon, Sun, Globe, Filter } from 'lucide-react';
+import { LayoutGrid, List, Calendar, Plus, Moon, Sun, Globe, Filter, X } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Priority, Status } from '@/types/task';
 
 type ViewType = 'board' | 'list' | 'timeline';
 
@@ -17,11 +22,22 @@ interface HeaderProps {
   currentView: ViewType;
   onViewChange: (view: ViewType) => void;
   onAddTask: () => void;
+  filterCount?: number;
+  filters?: { priority: Priority[]; status: Status[] };
+  onFilterChange?: (filters: { priority: Priority[]; status: Status[] }) => void;
 }
 
-export function Header({ currentView, onViewChange, onAddTask }: HeaderProps) {
+export function Header({ 
+  currentView, 
+  onViewChange, 
+  onAddTask,
+  filterCount = 0,
+  filters = { priority: [], status: [] },
+  onFilterChange,
+}: HeaderProps) {
   const { t, i18n } = useTranslation();
   const { theme, setTheme } = useTheme();
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const toggleTheme = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
@@ -31,6 +47,27 @@ export function Header({ currentView, onViewChange, onAddTask }: HeaderProps) {
     const newLang = i18n.language === 'en' ? 'fr' : 'en';
     i18n.changeLanguage(newLang);
     localStorage.setItem('language', newLang);
+  };
+
+  const handlePriorityChange = (priority: Priority) => {
+    if (!onFilterChange) return;
+    const newPriorities = filters.priority.includes(priority)
+      ? filters.priority.filter((p) => p !== priority)
+      : [...filters.priority, priority];
+    onFilterChange({ ...filters, priority: newPriorities });
+  };
+
+  const handleStatusChange = (status: Status) => {
+    if (!onFilterChange) return;
+    const newStatuses = filters.status.includes(status)
+      ? filters.status.filter((s) => s !== status)
+      : [...filters.status, status];
+    onFilterChange({ ...filters, status: newStatuses });
+  };
+
+  const clearFilters = () => {
+    if (!onFilterChange) return;
+    onFilterChange({ priority: [], status: [] });
   };
 
   return (
@@ -56,10 +93,94 @@ export function Header({ currentView, onViewChange, onAddTask }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" className="gap-2">
-          <Filter className="h-4 w-4" />
-          {t('filter')}
-        </Button>
+        <DropdownMenu open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="gap-2">
+              <Filter className="h-4 w-4" />
+              {t('filter')}
+              {filterCount > 0 && (
+                <Badge variant="secondary" className="ml-1">
+                  {filterCount}
+                </Badge>
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel>{t('priority')}</DropdownMenuLabel>
+            <DropdownMenuCheckboxItem
+              checked={filters.priority.includes('high')}
+              onCheckedChange={() => handlePriorityChange('high')}
+              onSelect={(e) => e.preventDefault()}
+            >
+              <span className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-red-500" />
+                {t('high')}
+              </span>
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={filters.priority.includes('medium')}
+              onCheckedChange={() => handlePriorityChange('medium')}
+              onSelect={(e) => e.preventDefault()}
+            >
+              <span className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-yellow-500" />
+                {t('medium')}
+              </span>
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={filters.priority.includes('low')}
+              onCheckedChange={() => handlePriorityChange('low')}
+              onSelect={(e) => e.preventDefault()}
+            >
+              <span className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-green-500" />
+                {t('low')}
+              </span>
+            </DropdownMenuCheckboxItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuLabel>{t('status')}</DropdownMenuLabel>
+            <DropdownMenuCheckboxItem
+              checked={filters.status.includes('todo')}
+              onCheckedChange={() => handleStatusChange('todo')}
+              onSelect={(e) => e.preventDefault()}
+            >
+              {t('todo')}
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={filters.status.includes('progress')}
+              onCheckedChange={() => handleStatusChange('progress')}
+              onSelect={(e) => e.preventDefault()}
+            >
+              {t('onProgress')}
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={filters.status.includes('review')}
+              onCheckedChange={() => handleStatusChange('review')}
+              onSelect={(e) => e.preventDefault()}
+            >
+              {t('needReview')}
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              checked={filters.status.includes('done')}
+              onCheckedChange={() => handleStatusChange('done')}
+              onSelect={(e) => e.preventDefault()}
+            >
+              {t('done')}
+            </DropdownMenuCheckboxItem>
+
+            {filterCount > 0 && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={clearFilters} className="text-destructive">
+                  <X className="h-4 w-4 mr-2" />
+                  {t('clearFilters') || 'Clear filters'}
+                </DropdownMenuItem>
+              </>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <Button variant="ghost" size="icon" onClick={toggleLanguage} title={t('language')}>
           <Globe className="h-4 w-4" />

@@ -23,9 +23,11 @@ import {
 interface SidebarProps {
   collapsed: boolean;
   onToggle: () => void;
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
 }
 
-export function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export function Sidebar({ collapsed, onToggle, searchQuery = '', onSearchChange }: SidebarProps) {
   const { t } = useTranslation();
   const [sharedOpen, setSharedOpen] = useState(true);
   const [privateOpen, setPrivateOpen] = useState(true);
@@ -82,11 +84,18 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder={t('searchPlaceholder')}
+              value={searchQuery}
+              onChange={(e) => onSearchChange?.(e.target.value)}
               className="h-9 bg-sidebar-accent pl-9 text-sm"
             />
-            <kbd className="absolute right-2 top-1/2 -translate-y-1/2 rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
-              ⌘K
-            </kbd>
+            {searchQuery && (
+              <button
+                onClick={() => onSearchChange?.('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                ✕
+              </button>
+            )}
           </div>
         </div>
       )}

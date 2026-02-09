@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
@@ -8,7 +8,7 @@ import { TimelineView } from '@/components/views/TimelineView';
 import { TaskDialog } from '@/components/tasks/TaskDialog';
 import { TaskDetailPanel } from '@/components/tasks/TaskDetailPanel';
 import { useTasks, useCreateTask, useUpdateTask, useDeleteTask } from '@/hooks/useTasks';
-import { Task, Status } from '@/types/task';
+import { Task, Status, Priority } from '@/types/task';
 import { Loader2 } from 'lucide-react';
 
 type ViewType = 'board' | 'list' | 'timeline';
@@ -22,11 +22,43 @@ export default function Index() {
   const [panelOpen, setPanelOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [defaultStatus, setDefaultStatus] = useState<Status>('todo');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState<{ priority: Priority[]; status: Status[] }>({
+    priority: [],
+    status: [],
+  });
 
   const { data: tasks, isLoading, error } = useTasks();
   const createTask = useCreateTask();
   const updateTask = useUpdateTask();
   const deleteTask = useDeleteTask();
+
+  // Filter tasks based on search and filters
+  const filteredTasks = useMemo(() => {
+    if (!tasks) return [];
+
+    return tasks.filter((task) => {
+      // Search filter
+      const searchLower = searchQuery.toLowerCase();
+      const matchesSearch =
+        task.title.toLowerCase().includes(searchLower) ||
+        (task.description && task.description.toLowerCase().includes(searchLower));
+
+      if (!matchesSearch) return false;
+
+      // Priority filter
+      if (filters.priority.length > 0 && !filters.priority.includes(task.priority)) {
+        return false;
+      }
+
+      // Status filter
+      if (filters.status.length > 0 && !filters.status.includes(task.status)) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [tasks, searchQuery, filters]);
 
   const handleAddTask = (status?: Status) => {
     setSelectedTask(null);
@@ -115,6 +147,8 @@ export default function Index() {
       <Sidebar
         collapsed={sidebarCollapsed}
         onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
       />
 
       <div className="flex flex-1 flex-col overflow-hidden">
@@ -122,13 +156,16 @@ export default function Index() {
           currentView={currentView}
           onViewChange={setCurrentView}
           onAddTask={() => handleAddTask()}
+          filterCount={filters.priority.length + filters.status.length}
+          onFilterChange={(newFilters) => setFilters(newFilters)}
+          filters={filters}
         />
 
         <div className="flex flex-1 overflow-hidden">
           <main className="flex-1 overflow-hidden">
             {currentView === 'board' && (
               <KanbanBoard
-                tasks={tasks || []}
+                tasks={filteredTasks}
                 onTaskClick={handleTaskClick}
                 onTaskMove={handleTaskMove}
                 onAddTask={handleAddTask}
@@ -136,14 +173,14 @@ export default function Index() {
             )}
             {currentView === 'list' && (
               <ListView
-                tasks={tasks || []}
+                tasks={filteredTasks}
                 onTaskClick={handleTaskClick}
                 onTaskToggle={handleTaskToggle}
               />
             )}
             {currentView === 'timeline' && (
               <TimelineView
-                tasks={tasks || []}
+                tasks={filteredTasks}
                 onTaskClick={handleTaskClick}
               />
             )}
