@@ -6,6 +6,7 @@ import { KanbanBoard } from '@/components/views/KanbanBoard';
 import { ListView } from '@/components/views/ListView';
 import { TimelineView } from '@/components/views/TimelineView';
 import { TaskDialog } from '@/components/tasks/TaskDialog';
+import { TaskDetailPanel } from '@/components/tasks/TaskDetailPanel';
 import { useTasks, useCreateTask, useUpdateTask, useDeleteTask } from '@/hooks/useTasks';
 import { Task, Status } from '@/types/task';
 import { Loader2 } from 'lucide-react';
@@ -18,6 +19,8 @@ export default function Index() {
   const [currentView, setCurrentView] = useState<ViewType>('board');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [panelOpen, setPanelOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [defaultStatus, setDefaultStatus] = useState<Status>('todo');
 
   const { data: tasks, isLoading, error } = useTasks();
@@ -33,7 +36,20 @@ export default function Index() {
 
   const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
+    setPanelOpen(true);
+    setIsEditMode(false);
+  };
+
+  const handleEditTask = () => {
+    setIsEditMode(true);
     setDialogOpen(true);
+  };
+
+  const handleClosePanel = () => {
+    setPanelOpen(false);
+    setSelectedTask(null);
+    setIsEditMode(false);
+    setDialogOpen(false);
   };
 
   const handleTaskSave = (taskData: Partial<Task>) => {
@@ -108,34 +124,52 @@ export default function Index() {
           onAddTask={() => handleAddTask()}
         />
 
-        <main className="flex-1 overflow-hidden">
-          {currentView === 'board' && (
-            <KanbanBoard
-              tasks={tasks || []}
-              onTaskClick={handleTaskClick}
-              onTaskMove={handleTaskMove}
-              onAddTask={handleAddTask}
+        <div className="flex flex-1 overflow-hidden">
+          <main className="flex-1 overflow-hidden">
+            {currentView === 'board' && (
+              <KanbanBoard
+                tasks={tasks || []}
+                onTaskClick={handleTaskClick}
+                onTaskMove={handleTaskMove}
+                onAddTask={handleAddTask}
+              />
+            )}
+            {currentView === 'list' && (
+              <ListView
+                tasks={tasks || []}
+                onTaskClick={handleTaskClick}
+                onTaskToggle={handleTaskToggle}
+              />
+            )}
+            {currentView === 'timeline' && (
+              <TimelineView
+                tasks={tasks || []}
+                onTaskClick={handleTaskClick}
+              />
+            )}
+          </main>
+
+          {/* Task Detail Panel */}
+          {panelOpen && selectedTask && (
+            <TaskDetailPanel
+              task={selectedTask}
+              onClose={handleClosePanel}
+              onEdit={handleEditTask}
+              onDelete={() => {
+                handleTaskDelete(selectedTask.id);
+                handleClosePanel();
+              }}
             />
           )}
-          {currentView === 'list' && (
-            <ListView
-              tasks={tasks || []}
-              onTaskClick={handleTaskClick}
-              onTaskToggle={handleTaskToggle}
-            />
-          )}
-          {currentView === 'timeline' && (
-            <TimelineView
-              tasks={tasks || []}
-              onTaskClick={handleTaskClick}
-            />
-          )}
-        </main>
+        </div>
       </div>
 
       <TaskDialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
+        open={dialogOpen && isEditMode}
+        onClose={() => {
+          setDialogOpen(false);
+          setIsEditMode(false);
+        }}
         task={selectedTask}
         onSave={handleTaskSave}
         onDelete={handleTaskDelete}

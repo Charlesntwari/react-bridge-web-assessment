@@ -31,7 +31,6 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const [privateOpen, setPrivateOpen] = useState(true);
 
   const navItems = [
-    { icon: Search, label: t('search'), shortcut: '⌘K' },
     { icon: Sparkles, label: t('aiAssistant') },
     { icon: Inbox, label: t('inbox'), badge: 3 },
     { icon: Calendar, label: t('calendar') },
@@ -112,11 +111,6 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                     <span className="rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">
                       {item.badge}
                     </span>
-                  )}
-                  {item.shortcut && (
-                    <kbd className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                      {item.shortcut}
-                    </kbd>
                   )}
                 </>
               )}
