@@ -81,8 +81,15 @@ export function TaskDialog({ open, onClose, task, onSave, onDelete }: TaskDialog
       setPriority(task.priority);
       setStatus(task.status);
       setDueDate(task.dueDate ? format(new Date(task.dueDate), 'yyyy-MM-dd') : '');
+    } else if (open && !task) {
+      // Reset form when opening dialog for creating new task
+      setTitle('');
+      setDescription('');
+      setPriority('medium');
+      setStatus('todo');
+      setDueDate('');
     }
-  }, [task]);
+  }, [task, open]);
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>

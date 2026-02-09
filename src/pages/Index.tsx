@@ -202,7 +202,7 @@ export default function Index() {
       </div>
 
       <TaskDialog
-        open={dialogOpen && isEditMode}
+        open={dialogOpen}
         onClose={() => {
           setDialogOpen(false);
           setIsEditMode(false);
